@@ -1,0 +1,867 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SealGG, Cuentas de Steam y Juegos Gratuitos</title>
+    <link rel="icon" href="http://imgfz.com/i/pQrlmei.png" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #1b2838;
+            --secondary-color: #2a475e;
+            --accent-color: #66c0f4;
+            --text-color: #c7d5e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background-color: var(--secondary-color);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .welcome-message h2 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .welcome-message p {
+            color: var(--text-color);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .auth-form h2 {
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .auth-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .auth-form input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .auth-form button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-form button:hover {
+            background-color: #4da5d8;
+        }
+
+        .user-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--secondary-color);
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-info button:hover {
+            background-color: #4da5d8;
+        }
+
+        .banner-section {
+            margin-bottom: 30px;
+        }
+
+        .banner {
+            width: 100%;
+            height: 200px;
+            background-image: url('http://imgfz.com/i/8ypAHQ7.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .description h2 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .description p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .games-section {
+            margin-top: 40px;
+        }
+
+        .games-section h2 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .game-details {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .game-details h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .game-details p {
+            margin-bottom: 15px;
+        }
+
+        .download-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: #4da5d8;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background-color: var(--secondary-color);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            color: var(--text-color);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: var(--accent-color);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #4da5d8;
+        }
+
+        .account-details {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        .account-details h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .account-details p {
+            margin-bottom: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .social-button {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-button:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .social-button svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            fill: currentColor;
+        }
+
+        .youtube:hover {
+            background-color: #FF0000;
+        }
+
+        .discord:hover {
+            background-color: #7289DA;
+        }
+
+        .instagram:hover {
+            background-color: #E1306C;
+        }
+
+        .tiktok:hover {
+            background-color: #69C9D0;
+        }
+
+        .error-card {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .error-content {
+            background-color: var(--secondary-color);
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .error-content h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .error-content p {
+            margin-bottom: 20px;
+        }
+
+        .error-content button {
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .error-content button:hover {
+            background-color: #4da5d8;
+        }
+
+        .support-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .support-button:hover {
+            background-color: #128C7E;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .user-info {
+                position: static;
+                margin-bottom: 20px;
+            }
+
+            .banner {
+                height: 150px;
+            }
+
+            .description {
+                padding: 15px;
+            }
+
+            .description h2 {
+                font-size: 20px;
+            }
+
+            .description p {
+                font-size: 14px;
+            }
+
+            .card-container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+
+            .social-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .social-button {
+                width: 100%;
+                max-width: 200px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loginContainer" class="auth-container">
+            <div class="welcome-message">
+                <h2>Bienvenido a SealGG</h2>
+                <p>Por favor, seleccione si desea iniciar sesión o crear una cuenta nueva.</p>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Iniciar Sesión</button>
+                <button class="auth-tab" data-tab="register">Registrarte</button>
+            </div>
+            <div id="loginForm" class="auth-form active">
+                <h2>Inicia Sesión Gratis Con tu Cuenta Creada</h2>
+                <form>
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <button type="submit">Iniciar Sesión</button>
+                </form>
+            </div>
+            <div id="registerForm" class="auth-form">
+                <h2>Crea tu Cuenta de Manera Gratuita</h2>
+                <form>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <input type="password" id="registerPassword" placeholder="Password" required>
+                    <button type="submit">Crear Cuenta</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="userInfo" class="user-info" style="display: none;">
+            <span id="userEmail"></span>
+            <button id="logoutBtn">Cerrar Sesión</button>
+        </div>
+
+        <div id="content" style="display: none;">
+            <div class="banner-section">
+                <div class="banner">
+                </div>
+                <div class="description">
+                    <h2>Bienvenido a SealGG</h2>
+                    <p>Obten Cuentas de Steam con Juegos de Manera Gratuita y Descarga Juegos Directos de Manera Fácil y Libre de Virus.</p>
+                </div>
+                <div class="social-buttons">
+                    <a href="https://www.youtube.com/@Alexiusss_VC" target="_blank" class="social-button youtube">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                        YouTube
+                    </a>
+                    <a href="https://discord.com/invite/hJrFBf74KG" target="_blank" class="social-button discord">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.54 0c1.356 0 2.46 1.104 2.46 2.472v21.528l-2.58-2.28-1.452-1.344-1.536-1.428.636 2.22h-13.608c-1.356 0-2.46-1.104-2.46-2.472v-16.224c0-1.368 1.104-2.472 2.46-2.472h16.08zm-4.632 15.672c2.652-.084 3.672-1.824 3.672-1.824 0-3.864-1.728-6.996-1.728-6.996-1.728-1.296-3.372-1.26-3.372-1.26l-.168.192c2.04.624 2.988 1.524 2.988 1.524-1.248-.684-2.472-1.02-3.612-1.152-.864-.096-1.692-.072-2.424.024l-.204.024c-.42.036-1.44.192-2.724.756-.444.204-.708.348-.708.348s.996-.948 3.156-1.572l-.12-.144s-1.644-.036-3.372 1.26c0 0-1.728 3.132-1.728 6.996 0 0 1.008 1.74 3.66 1.824 0 0 .444-.54.804-.996-1.524-.456-2.1-1.416-2.1-1.416l.336.204.048.036.047.027.014.006.047.027c.3.168.6.3.876.408.492.192 1.08.384 1.764.516.9.168 1.956.228 3.108.012.564-.096 1.14-.264 1.74-.516.42-.156.888-.384 1.38-.708 0 0-.6.984-2.172 1.428.36.456.792.972.792.972zm-5.58-5.604c-.684 0-1.224.6-1.224 1.332 0 .732.552 1.332 1.224 1.332.684 0 1.224-.6 1.224-1.332.012-.732-.54-1.332-1.224-1.332zm4.38 0c-.684 0-1.224.6-1.224 1.332 0 .732.552 1.332 1.224 1.332.684 0 1.224-.6 1.224-1.332 0-.732-.54-1.332-1.224-1.332z"/></svg>
+                        Discord
+                    </a>
+                    <a href="https://www.instagram.com/aleexz_0" target="_blank" class="social-button instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        Instagram
+                    </a>
+                    <a href="https://www.tiktok.com/@aalexz_0" target="_blank" class="social-button tiktok">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                        TikTok
+                    </a>
+                </div>
+            </div>
+            <h1>Cuentas de Steam Gratuitas</h1>
+            <div class="card-container" id="cardContainer"></div>
+            <div class="games-section">
+                <h2>Descargar Juegos Gratis</h2>
+                <div class="game-container" id="gameContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Ingresar Key</h2>
+            <input type="text" id="keyInput" placeholder="Enter key">
+            <button id="submitKey">Ingresar</button>
+            <div id="accountDetails" class="account-details" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <div id="errorCard" class="error-card" style="display: none;">
+        <div class="error-content">
+            <h3>Error de Key</h3>
+            <p>Para Adquirir una Key deberás escribir al Grupo de Discord o Asistir a los En Vivo en el Canal de YouTube</p>
+            <button id="closeErrorCard">Cerrar</button>
+        </div>
+    </div>
+
+    <footer class="copyright">
+        &copy; 2024 SealGG - Alexiusss VC - Zynthro Studio. Todos los Derechos Reservados.
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+  apiKey: "AIzaSyDQmmHlaVp_1b065JFJmjgBpfKhoAt30uU",
+  authDomain: "sealgg-89e62.firebaseapp.com",
+  projectId: "sealgg-89e62",
+  storageBucket: "sealgg-89e62.appspot.com",
+  messagingSenderId: "603510154898",
+  appId: "1:603510154898:web:b9026bc50c14689a7ea84b"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const accountCreatedFlag = 'accountCreated';
+
+        const accounts = [
+            { id: 1, name: "MKX", games: 1, key: "ALEXIUSSSYT", username: "Kekelove2021", password: "Keedee2019$", gameList: ["Mortal Kombat X",] },
+            { id: 2, name: "CyberP", games: 1, key: "CYBERPUNK1", username: "fb3wm9oc5hd9", password: "3HAawjsplay", gameList: ["Cyberpunk 2077 Ultimate Edition",] },
+            { id: 3, name: "PackSeal8", games: 8, key: "888888", username: "alkasha230", password: "ZeYVJVu7!", gameList: ["GARRY'S MOD", "GEMOTRY DASH", "METRO EXODUS ENCHANCED EDITION", "PORTAL 2", "SNIPER ELITE 4", "THE WITCHER ENHANCED EDITION", "THE WITCHER 2 ASSASINS OF KING", "THE WITHCER 3 WILD HUNT",] },
+            { id: 4, name: "Eternaluvin", games: 2, key: "PHASNB20", username: "eternaluvin", password: "LeonmelShopPhasmo21456", gameList: ["Phasmophobia", "NBA2K23",] },
+            { id: 5, name: "Muqja", games: 4, key: "4GGAMESS", username: "muqja21321", password: "S20s1939no", gameList: ["God Of War", "Lief of P", "Cyberpunk 2077", " Jurassuc World Evolution 2", "Más", ,] },
+            { id: 6, name: "Luckytube488", games: 8, key: "JQWIOUEZX", username: "Luckytube488", password: "0947380581a", gameList: ["Monster Hunter World", "ARK Survival Evolved", "Lego Marvel I - II", "Little Nightmares", "Mad Max", "Pay Day 2", "Tomb Raider", "Wallpaper Engine", ,] },
+            { id: 7, name: "Alexiars", games: 2, key: "DGZBK9J23", username: "alexiars", password: "QEvU3Y7S", gameList: ["Dragon Ball Z Kakaroto", "PC Building Simulator", ,] },
+            { id: 8, name: "Aguiarei", games: 6, key: "MMNZXJ91", username: "aguiarei98", password: "E384YXEX7ZM7", gameList: ["Elden Ring", "Arma 3", "Devour", "Resident Evil 4 (2009)", "Tekken 7", "Wallpaper Engine", ,] },
+            { id: 9, name: "Yyybw", games: 1, key: "ZXVVUUJ298K", username: "yyybw62305", password: "h6nvojRDsKe4EOgZfM", gameList: ["Spiderman Remastered", ,] },
+            { id: 10, name: "Legatebroke", games: 5, key: "POQWPOOP99", username: "legatebroke", password: "WPqL5HPk", gameList: ["Tekken 8", "It Takes Two", "Dragon Ball Xenoverse", "Terminator Dark Fate", "Half Life I - II", ,] },
+        ];
+
+        const games = [
+            { id: 1, name: "Cyberpunk 2077", description: "Cyberpunk 2077 es un videojuego de rol de acción de disparos en primera persona.", image: "https://m.media-amazon.com/images/M/MV5BZWYyNDRkNzAtOTI0Ny00NDQwLWE5M2YtMWFiZDdmMDc4MmQ0XkEyXkFqcGc@._V1_QL75_UX190_CR0,2,190,281_.jpg", downloadLink: "https://7launcher.com/cyberpunk-2077/" },
+            { id: 2, name: "Counter Strike Source", description: "Counter-Strike: Source es un videojuego de la serie Counter-Strike.", image: "https://m.media-amazon.com/images/M/MV5BNGIxNzQ2MDEtN2QwMi00N2Y5LTk3YzEtYjU0NDkzZTI4ZmU2XkEyXkFqcGc@._V1_.jpg", downloadLink: "https://7launcher.com/cs-source/" },
+            { id: 3, name: "Starfield", description: "Starfield es un videojuego de rol de ciencia ficción.", image: "https://m.media-amazon.com/images/M/MV5BMDA0ZWU0MTYtOGU0MC00NjMzLWFiZjYtYjE3MjdjOGRkNzg2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", downloadLink: "https://7launcher.com/starfield/" },
+            { id: 4, name: "Grand Theft Auto V", description: "Grand Theft Auto V es un videojuego de acción-aventura de mundo abierto.", image: "https://m.media-amazon.com/images/M/MV5BOGI2Yjk1ZTEtZTA2Yy00ZjQ3LTk4MTgtYTgyMGQ1Zjk3YjgzXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", downloadLink: "https://7launcher.com/gta-v/" },
+        ];
+
+        let currentUser = null;
+        let selectedAccount = null;
+
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authForms = document.querySelectorAll('.auth-form');
+
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-tab');
+                
+                authTabs.forEach(t => t.classList.remove('active'));
+                authForms.forEach(f => f.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tabName}Form`).classList.add('active');
+            });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            login(email, password);
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            register(email, password);
+        });
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userInfo = document.getElementById('userInfo');
+        const userEmail = document.getElementById('userEmail');
+        const loginContainer = document.getElementById('loginContainer');
+        const content = document.getElementById('content');
+        const cardContainer = document.getElementById('cardContainer');
+        const gameContainer = document.getElementById('gameContainer');
+        const modal = document.getElementById('modal');
+        const closeBtn = document.querySelector('.close');
+        const keyInput = document.getElementById('keyInput');
+        const submitKey = document.getElementById('submitKey');
+        const accountDetails = document.getElementById('accountDetails');
+        const errorCard = document.getElementById('errorCard');
+        const closeErrorCard = document.getElementById('closeErrorCard');
+
+        logoutBtn.addEventListener('click', logout);
+
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        closeErrorCard.addEventListener('click', () => {
+            errorCard.style.display = 'none';
+        });
+
+        function login(email, password) {
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    currentUser = userCredential.user;
+                    userEmail.textContent = currentUser.email;
+                    loginContainer.style.display = 'none';
+                    userInfo.style.display = 'flex';
+                    content.style.display = 'block';
+                    renderAccounts();
+                    renderGames();
+                })
+                .catch((error) => {
+                    alert("Error en el inicio de sesión: " + error.message);
+                });
+        }
+
+        function register(email, password) {
+            if (localStorage.getItem(accountCreatedFlag)) {
+                showAccountLimitModal();
+            } else {
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        currentUser = userCredential.user;
+                        userEmail.textContent = currentUser.email;
+                        loginContainer.style.display = 'none';
+                        userInfo.style.display = 'flex';
+                        content.style.display = 'block';
+                        renderAccounts();
+                        renderGames();
+                        localStorage.setItem(accountCreatedFlag, 'true');
+                    })
+                    .catch((error) => {
+                        alert("Error en el registro: " + error.message);
+                    });
+            }
+        }
+
+        function showAccountLimitModal() {
+            const modalContent = `
+                <div class="modal-content">
+                    <h3>Límite de Cuenta Alcanzado</h3>
+                    <p>Ya has creado una cuenta en este dispositivo. Inicia sesión con los datos de tu cuenta. En caso hayas olvidado la contraseña, puedes escribirle a Support tocando el botón.</p>
+                    <a href="https://wa.me/6285282568927?text=He%20olvidado%20los%20datos%20de%20mi%20cuenta,%20deseo%20recuperarla" target="_blank" class="support-button">Contactar a Soporte</a>
+                    <button id="closeAccountLimitModal">Cerrar</button>
+                </div>
+            `;
+            
+            const accountLimitModal = document.createElement('div');
+            accountLimitModal.className = 'modal';
+            accountLimitModal.innerHTML = modalContent;
+            document.body.appendChild(accountLimitModal);
+            
+            accountLimitModal.style.display = 'block';
+            
+            document.getElementById('closeAccountLimitModal').addEventListener('click', () => {
+                accountLimitModal.style.display = 'none';
+                document.body.removeChild(accountLimitModal);
+            });
+        }
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                currentUser = null;
+                loginContainer.style.display = 'block';
+                userInfo.style.display = 'none';
+                content.style.display = 'none';
+            }).catch((error) => {
+                console.error("Error durante el cierre de sesión:", error);
+            });
+        }
+
+        function renderAccounts() {
+            cardContainer.innerHTML = '';
+            accounts.forEach(account => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#66c0f4">
+                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm-2.426 14.741h-3.574v-.202l1.261-1.529c.134-.166.277-.338.337-.544.069-.235-.021-.470-.069-.705-.166-.779-.39-1.545-.583-2.318-.096-.384-.214-.768-.294-1.155-.102-.498.045-.939.491-1.155.398-.194.784-.039 1.043.338.259.378.374.846.491 1.293.134.506.251 1.015.374 1.524.118.481.251.957.368 1.437.021.091.064.176.107.284.155-.181.294-.338.42-.506.613-.81 1.239-1.608 1.868-2.401.497-.625 1.083-1.128 1.72-1.591.629-.46 1.349-.724 2.117-.724.966.005 1.732.466 2.219 1.293.497.836.359 1.829-.331 2.543-.701.724-1.62 1.010-2.54 1.165-.763.134-1.538.117-2.307.145-.153.005-.307.021-.52.037.483.619.992 1.284 1.513 1.94.091.112.225.203.347.263.535.263 1.083.503 1.63.724.381.155.787.23 1.185.338.166.043.337.048.503.075v.208h-6.72v-.208c.166-.027.331-.059.503-.091.684-.134 1.362-.284 2.013-.544.072-.027.139-.123.181-.203.295-.352.579-.715.858-1.082l.134-.171c-.412 0-.773.011-1.133 0-.966-.027-1.926-.096-2.881-.241-.381-.059-.751-.187-1.121-.317-.529-.187-1.046-.411-1.562-.624-.07-.027-.118-.102-.177-.155l1.138-.917zm11.426-2.741c0 2.776-2.224 5-5 5s-5-2.224-5-5 2.224-5 5-5 5 2.224 5 5zm-5.366 3.366c.465 0 .897-.258 1.119-.671l.974.217c-.354.737-1.104 1.246-1.973 1.246-1.213 0-2.196-.985-2.196-2.196s.983-2.196 2.196-2.196c.906 0 1.683.548 2.021 1.329l-1.001.189c-.185-.342-.547-.574-.964-.574-.638 0-1.158.52-1.158 1.158s.52 1.158 1.158 1.158zm2.208-1.158c0 .638.52 1.158 1.158 1.158s1.158-.52 1.158-1.158-.52-1.158-1.158-1.158-1.158.52-1.158 1.158zm-5.108-1.686l.877.292-.877.292v-.584zm-1.292.584l-.877-.292.877-.292v.584z"/>
+                    </svg>
+                    <h3>${account.name}</h3>
+                    <p>Games: ${account.games}</p>
+                `;
+                card.addEventListener('click', () => openModal(account));
+                cardContainer.appendChild(card);
+            });
+        }
+
+        function renderGames() {
+            gameContainer.innerHTML = '';
+            games.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `<img src="${game.image}" alt="${game.name}">`;
+                gameCard.addEventListener('click', () => openGameModal(game));
+                gameContainer.appendChild(gameCard);
+            });
+        }
+
+        function openModal(account) {
+            selectedAccount = account;
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.innerHTML = `
+                <span class="close">&times;</span>
+                <h2>${account.name}</h2>
+                <p>Games: ${account.games}</p>
+                <h3>Games in this account:</h3>
+                <ul>
+                    ${account.gameList.map(game => `<li>${game}</li>`).join('')}
+                </ul>
+                <h3>Enter Key</h3>
+                <input type="text" id="keyInput" placeholder="Enter key">
+                <button id="submitKey">Submit</button>
+                <div id="accountDetails" class="account-details" style="display: none;"></div>
+            `;
+            modal.style.display = 'block';
+
+            const closeBtn = modalContent.querySelector('.close');
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            const submitKey = modalContent.querySelector('#submitKey');
+            submitKey.addEventListener('click', () => {
+                const enteredKey = modalContent.querySelector('#keyInput').value;
+                if (enteredKey === selectedAccount.key) {
+                    showAccountDetails();
+                } else {
+                    errorCard.style.display = 'block';
+                }
+            });
+        }
+
+        function openGameModal(game) {
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.innerHTML = `
+                <span class="close">&times;</span>
+                <div class="game-details">
+                    <h3>${game.name}</h3>
+                    <p>${game.description}</p>
+                    <a href="${game.downloadLink}" target="_blank" class="download-button">Descargar</a>
+                </div>
+            `;
+            modal.style.display = 'block';
+
+            const closeBtn = modalContent.querySelector('.close');
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+        }
+
+        function showAccountDetails() {
+            const accountDetails = document.getElementById('accountDetails');
+            accountDetails.innerHTML = `
+                <h3>Account Details</h3>
+                <p><strong>Username:</strong> ${selectedAccount.username}</p>
+                <p><strong>Password:</strong> ${selectedAccount.password}</p>
+            `;
+            accountDetails.style.display = 'block';
+        }
+
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+            if (event.target === errorCard) {
+                errorCard.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>
